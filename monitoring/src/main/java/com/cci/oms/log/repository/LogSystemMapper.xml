@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cci.oms.log.repository.LogSystemMapper">
+    <resultMap id="BaseResultMap" type="com.cci.oms.log.container.LogSystem">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="host_name" property="hostName" jdbcType="VARCHAR" />
+        <result column="handle" property="handle" jdbcType="VARCHAR" />
+        <result column="handle_time" property="handleTime" jdbcType="VARCHAR" />
+        <result column="contents" property="contents" jdbcType="VARCHAR" />
+        <result column="is_del" property="deleteFlag" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="dt_create" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="dt_update" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="NUMERIC" />
+    </resultMap>
+    
+    <insert id="insert" parameterType="com.cci.oms.log.container.LogSystem">
+        INSERT INTO T_MT_LOG (ID,USER_NAME,HOST_NAME,HANDLE,HANDLE_TIME,CONTENTS,CREATE_BY,DT_CREATE)
+        VALUES 
+        (
+         #{id},#{userName},#{hostName},#{handle},#{handleTime},#{contents},#{createBy},#{createDate}
+         )
+    </insert>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.cci.oms.log.container.LogSystem">
+       <![CDATA[ 
+       		SELECT 
+       		    ID          ,
+				USER_NAME   ,
+				HOST_NAME   ,
+				HANDLE      ,
+				HANDLE_TIME ,
+				CONTENTS    ,
+				IS_DEL      ,
+				CREATE_BY   ,
+				DT_CREATE   ,
+				UPDATE_BY   ,
+				DT_UPDATE   ,
+				VERSION     				         
+       		FROM T_MT_LOG 
+       		WHERE (#{handleTime} IS NULL OR LENGTH(trim(#{handleTime}))<1 OR (HANDLE_TIME >= #{handleTime} AND HANDLE_TIME <= #{searchValue1}))
+       		AND USER_NAME IS NOT NULL
+       		ORDER BY HANDLE_TIME DESC
+       ]]>
+    </select>
+    
+</mapper>

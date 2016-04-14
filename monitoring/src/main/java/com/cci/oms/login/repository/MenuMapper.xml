@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cci.oms.login.repository.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.cci.oms.login.container.Menu">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="cd" property="code" jdbcType="VARCHAR" />
+        <result column="nm" property="name" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="style" property="style" jdbcType="VARCHAR" />
+        <result column="desp" property="description" jdbcType="VARCHAR" />
+        <result column="href" property="href" jdbcType="VARCHAR" />
+        <result column="is_root" property="isRoot" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="is_del" property="deleteFlag" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="dt_create" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="dt_update" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="NUMERIC" />
+    </resultMap>
+  
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+         id, cd, nm,type,style, desp, href, is_root, parent_id, position,is_del,create_by,dt_create,update_by,dt_update,version
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.MenuExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_sec_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.Menu">
+        select
+        <include refid="Base_Column_List" />
+        from t_sec_menu
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="getParentId"  parameterType="java.lang.String" resultType="java.lang.String">
+      select queryChildrenAreaInfo(#{id,jdbcType=VARCHAR});
+    </select>
+    <select id="getChildren"  parameterType="java.lang.String" resultType="java.lang.String">
+      select queryChildren(#{id,jdbcType=VARCHAR});
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.cci.oms.login.container.Menu">
+        update t_sec_menu set is_del = 'Y'
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.cci.oms.login.container.Menu">
+        insert  into t_sec_menu(id, cd, nm,type,style, desp, href, is_root, parent_id, position, description ,is_del,create_by,dt_create,update_by,dt_update)
+        values (#{id,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{style,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{href,jdbcType=VARCHAR},#{isRoot,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},
+        #{deleteFlag,jdbcType=VARCHAR},#{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="countByExample" parameterType="com.cci.oms.login.container.MenuExample" resultType="java.lang.Integer">
+        select count(*) from t_sec_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByPrimaryKey" parameterType="com.cci.oms.login.container.Menu">
+        update t_sec_menu
+        set nm = #{name,jdbcType=VARCHAR},
+        set type = #{type,jdbcType=VARCHAR},
+        set style = #{style,jdbcType=VARCHAR},
+        desp = #{description,jdbcType=VARCHAR},
+        is_root = #{isRoot,jdbcType=VARCHAR},
+        parent_id = #{parentId,jdbcType=VARCHAR},
+        position = #{position,jdbcType=VARCHAR},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        dt_update = #{updateDate,jdbcType=TIMESTAMP},
+        version = #{version,jdbcType=NUMERIC}
+        
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndList" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.MenuExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_sec_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+         ORDER BY POSITION
+ <!--        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if> -->
+    </select>
+</mapper> 

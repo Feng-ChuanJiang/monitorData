@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cci.oms.login.repository.UIstyleMapper">
+    <resultMap id="BaseResultMap" type="com.cci.oms.login.container.UIstyle">
+        <id column="userid" property="userId" jdbcType="VARCHAR" />
+        <result column="skin" property="skin" jdbcType="VARCHAR" />
+        <result column="uiscope" property="uiStyle" jdbcType="VARCHAR" />
+        <result column="submenu" property="submenu" jdbcType="VARCHAR" />
+        <result column="mininav" property="miniNav" jdbcType="VARCHAR" />
+        <result column="navstyle" property="navStyle" jdbcType="VARCHAR" />
+    </resultMap>
+  
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        userid,skin,uiscope,submenu,mininav,navstyle
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.UIstyle">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_sec_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.UIstyle">
+        select
+        <include refid="Base_Column_List" />
+        from t_mt_ui_set
+        where userId = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.cci.oms.login.container.UIstyle">
+        insert  into t_mt_ui_set(userid,skin,uiscope,submenu,mininav,navstyle)
+        values (#{userId,jdbcType=VARCHAR},#{skin,jdbcType=VARCHAR},#{uiStyle,jdbcType=VARCHAR},#{submenu,jdbcType=VARCHAR},#{miniNav,jdbcType=VARCHAR},#{navStyle,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.cci.oms.login.container.UIstyle">
+        update t_mt_ui_set
+        set skin = #{skin,jdbcType=VARCHAR},
+         mininav = #{miniNav,jdbcType=VARCHAR},
+         uiscope = #{uiStyle,jdbcType=VARCHAR},
+         submenu = #{submenu,jdbcType=VARCHAR},
+         navstyle = #{navStyle,jdbcType=VARCHAR}
+        where userid = #{userId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_mt_ui_set
+        <set>
+            <if test="record.skin != null">
+                skin = #{record.skin,jdbcType=VARCHAR},
+            </if>
+            <if test="record.miniNav != null">
+                mininav = #{record.miniNav,jdbcType=VARCHAR},
+            </if>
+            <if test="record.uiStyle != null">
+                uiscope = #{record.uiStyle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.submenu != null">
+                submenu = #{record.submenu,jdbcType=VARCHAR},
+            </if>
+            <if test="record.navStyle != null">
+                navstyle = #{record.navStyle,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+</mapper> 

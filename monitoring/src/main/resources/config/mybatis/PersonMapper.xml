@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cci.oms.repository.PersonRepository" >
+  <resultMap id="BaseResultMap" type="com.cci.oms.model.Person" >
+    <id column="number" property="number" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    number, name, birthday
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from person
+    where number = #{number,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from person
+    where number = #{number,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cci.oms.model.Person" >
+    insert into person (number, name, birthday
+      )
+    values (#{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cci.oms.model.Person" >
+    insert into person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cci.oms.model.Person" >
+    update person
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+    </set>
+    where number = #{number,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cci.oms.model.Person" >
+    update person
+    set name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE}
+    where number = #{number,jdbcType=INTEGER}
+  </update>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cci.oms.model.Person" >
+    select count(*) from person
+    <where >
+      <if test="number != null" >
+        and number = #{number,jdbcType=INTEGER}
+      </if>
+      <if test="name != null" >
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="birthday != null" >
+        and birthday = #{birthday,jdbcType=DATE}
+      </if>
+    </where>
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from person where 1 = 1 
+    <if test="param1.number != null" >
+      and number = #{param1.number,jdbcType=INTEGER}
+    </if>
+    <if test="param1.name != null" >
+      and name = #{param1.name,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.birthday != null" >
+      and birthday = #{param1.birthday,jdbcType=DATE}
+    </if>
+    <if test="param2.sort != null" >
+      order by 
+      <foreach collection="param2.sort" item="order" separator="," >
+        ${order.property} ${order.direction}
+      </foreach>
+    </if>
+    <if test="param2.offset >= 0 and param2.pageSize > 0" >
+      limit ${param2.offset}, ${param2.pageSize}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="*.*ist" extends="index">
+		<put-attribute name="main" value="/jsp/karluto/{1}/{1}_{2}ist.jsp" />
+	</definition>
+
+
+	<!-- 用户创建 -->
+	<definition name="creatUser" extends="index">
+	<put-attribute name="title" value="权限管理/用户管理/用户新增" />
+		<put-attribute name="main" value="/jsp/views/user/user_info_creat.jsp" />
+	</definition>
+	<!-- 用户维护-->
+	<definition name="userMain" extends="index">
+	<put-attribute name="title" value="权限管理/用户管理/用户操作" />
+		<put-attribute name="main" value="/jsp/views/user/user_info_main.jsp" />
+	</definition>
+
+	<!-- 角色维护-->
+	<definition name="roleMain" extends="index">
+	<put-attribute name="title" value="权限管理/角色管理" />
+		<put-attribute name="main" value="/jsp/views/user/role_info_main.jsp" />
+	</definition>
+	
+	<!-- 监控数据录入 -->
+	<definition name="monitorCreate" extends="index">
+		<put-attribute name="title" value="监控管理/监控录入"/>
+		<put-attribute name="main" value="/jsp/views/monitoring/monitor_add.jsp" />
+	</definition>
+
+	<!-- 密码设置 -->
+	<definition name="pwdSetting" extends="index">
+		<put-attribute name="title" value="密码设置"/>
+		<put-attribute name="main" value="/jsp/views/common/pwd_data_entry.jsp" />
+	</definition>
+	<!-- END -->
+	<!-- 日志管理-->
+	<definition name="log_doSearch" extends="index">
+		<put-attribute name="title" value="系统管理/日志管理"/>
+		<put-attribute name="main" value="/jsp/views/common/log_search.jsp" />
+	</definition>
+	<!-- END -->
+	<!-- FancyBox -->
+	<definition name="fancyBox" template="/jsp/template/fancyBox.jsp" />
+	
+	<definition name="*.*" template="/jsp/template/error.jsp">
+	</definition>
+
+</tiles-definitions>

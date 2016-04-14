@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cci.oms.login.repository.DepartmentMapper">
+   <resultMap id="userResultMap" type="com.cci.oms.login.container.User">
+        <id column="uid" property="id" jdbcType="VARCHAR" />
+        <result column="mt_user_group_id" property="userGroupId" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="user_pwd" property="password" jdbcType="CHAR" />
+        <result column="user_position" property="userPosition" jdbcType="VARCHAR" />
+        <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+        <result column="user_age" property="userAge" jdbcType="NUMERIC" />
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+        <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="is_del" property="deleteFlag" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="dt_create" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="dt_update" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="NUMERIC" />
+        <result column="last_sign_time" property="lastSignTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <resultMap id="BaseResultMap" type="com.cci.oms.login.container.Department">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="is_del" property="deleteFlag" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="dt_create" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="dt_update" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="NUMERIC" />
+     
+        <collection property="userlist" ofType="com.cci.oms.login.container.User" resultMap="userResultMap"/>
+      
+    </resultMap>
+
+    
+    
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id,name
+    </sql>
+    <select id="selectDepartmen" resultMap="BaseResultMap" >
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        t.id id,t.name name,u.id uid,u.username
+        from t_mt_user_group t,t_mt_user u where t.id=u.mt_user_group_id
+
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.Department">
+        select
+        <include refid="Base_Column_List" />
+        from t_mt_user_group
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.cci.oms.login.container.Department">
+        update t_mt_user_group set is_del = 'Y'
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.cci.oms.login.container.Department">
+        insert  into t_mt_user_group(id,mt_user_group_id ,username, user_pwd,user_position ,china_name ,user_sex ,user_age ,user_phone ,user_email ,user_address , remarks, is_del, create_by, dt_create,update_by,dt_update, version, last_sign_time)
+        values (#{id,jdbcType=VARCHAR},#{userGroupId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=CHAR},#{userPosition,jdbcType=VARCHAR},#{chinaName,jdbcType=VARCHAR},
+        #{userSex,jdbcType=VARCHAR},#{userAge,jdbcType=NUMERIC},#{userPhone,jdbcType=VARCHAR},#{userEmail,jdbcType=VARCHAR},#{userAddress,jdbcType=VARCHAR},
+        #{remarks,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{version,jdbcType=NUMERIC},  #{lastSignTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="countByExample" parameterType="com.cci.oms.login.container.DepartmentExample" resultType="java.lang.Integer">
+        select count(*) from t_mt_user_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+   
+    <update id="updateByPrimaryKey" parameterType="com.cci.oms.login.container.Department">
+        update t_mt_user_group
+        set mt_user_group_id = #{userGroupId,jdbcType=VARCHAR},
+        username = #{username,jdbcType=VARCHAR},
+        user_pwd = #{password,jdbcType=CHAR},
+        user_position = #{userPosition,jdbcType=VARCHAR},
+        china_name = #{chinaName,jdbcType=VARCHAR},
+        user_sex = #{userSex,jdbcType=VARCHAR},
+        user_age = #{userAge,jdbcType=NUMERIC},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        user_email = #{userEmail,jdbcType=VARCHAR},
+        user_address = #{userAddress,jdbcType=VARCHAR},
+        remarks = #{remarks,jdbcType=VARCHAR},
+        is_del = #{deleteFlag,jdbcType=VARCHAR},
+        create_by = #{updateBy,jdbcType=VARCHAR},
+        dt_update = #{updateDate,jdbcType=TIMESTAMP},
+        version = #{version,jdbcType=NUMERIC}
+        
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 用户登录验证查询 -->
+    <select id="authentication" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List" />
+        from t_mt_user_group
+        where username = #{record.username,jdbcType=VARCHAR} and user_pwd = #{record.password,jdbcType=CHAR}
+    </select>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.cci.oms.login.container.DepartmentExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_mt_user_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>
